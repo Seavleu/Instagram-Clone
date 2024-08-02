@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage} from "@/components/ui/form";
 
 import { SignUpValidation } from "@/lib/validation";
+import { createUserAccount } from "@/lib/appwrite/api";
 
-const SignUpForm = () => {
-  const isLoading = true;
+const SignupForm = () => {
+  const isLoading = false;
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
@@ -22,10 +23,10 @@ const SignUpForm = () => {
     },
   });
 
-  // 2. Define a submit handler.
-  // ✅ This will be type-safe and validated.
-  function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof SignUpValidation>) => {
+    const newUser = await createUserAccount(values)
+
+    console.log(newUser)
   }
 
   return (
@@ -109,4 +110,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignupForm;
